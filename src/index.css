@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* Tailwind CSS directives - required for Tailwind to work */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hybits Design System - Sustainability-focused colors and animations */
+
+@layer base {
+  /* Font Setup */
+  * {
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  :root {
+    --background: 40 100% 98%; /* Lotion #FEFBF6 */
+    --foreground: 163 66% 18%; /* Medium Jungle Green #1A382E */
+
+    --card: 40 100% 98%; /* Lotion #FEFBF6 */
+    --card-foreground: 163 66% 18%;
+
+    --popover: 40 100% 98%;
+    --popover-foreground: 163 66% 18%;
+
+    --primary: 156 39% 54%; /* Ocean Green #58B692 */
+    --primary-foreground: 163 66% 18%;
+    --primary-glow: 156 39% 64%;
+
+    --secondary: 163 66% 18%; /* Medium Jungle Green #1A382E */
+    --secondary-foreground: 40 100% 98%;
+
+    --muted: 40 100% 98%;
+    --muted-foreground: 163 66% 18%;
+
+    --accent: 156 39% 54%;
+    --accent-foreground: 163 66% 18%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 40 100% 98%;
+
+    --border: 156 39% 54%;
+    --input: 156 39% 54%;
+    --ring: 156 39% 54%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-eco: linear-gradient(135deg, #58B692, #1A382E);
+    --gradient-subtle: linear-gradient(180deg, #FEFBF6, #58B692);
+
+    /* Shadows */
+    --shadow-eco: 0 10px 30px -10px #58B69233;
+    --shadow-glow: 0 0 40px #58B69280;
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --sidebar-background: 163 66% 18%; /* Medium Jungle Green #1A382E */
+    --sidebar-foreground: 40 100% 98%;
+    --sidebar-primary: 156 39% 54%;
+    --sidebar-primary-foreground: 163 66% 18%;
+    --sidebar-accent: 156 39% 54%;
+    --sidebar-accent-foreground: 163 66% 18%;
+    --sidebar-border: 156 39% 54%;
+    --sidebar-ring: 156 39% 54%;
+    --primary-dark: 145 39% 34%; /* #145c3a */
+  }
+
+  .dark {
+    --background: 163 66% 18%; /* Medium Jungle Green #1A382E */
+    --foreground: 40 100% 98%;
+
+    --card: 163 66% 18%;
+    --card-foreground: 40 100% 98%;
+
+    --popover: 163 66% 18%;
+    --popover-foreground: 40 100% 98%;
+
+    --primary: 156 39% 54%;
+    --primary-foreground: 40 100% 98%;
+
+    --secondary: 40 100% 98%;
+    --secondary-foreground: 163 66% 18%;
+
+    --muted: 163 66% 18%;
+    --muted-foreground: 40 100% 98%;
+
+    --accent: 156 39% 54%;
+    --accent-foreground: 40 100% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 40 100% 98%;
+
+    --border: 156 39% 54%;
+    --input: 156 39% 54%;
+    --ring: 156 39% 54%;
+    --sidebar-background: 163 66% 18%;
+    --sidebar-foreground: 40 100% 98%;
+    --sidebar-primary: 156 39% 54%;
+    --sidebar-primary-foreground: 40 100% 98%;
+    --sidebar-accent: 156 39% 54%;
+    --sidebar-accent-foreground: 40 100% 98%;
+    --sidebar-border: 156 39% 54%;
+    --sidebar-ring: 156 39% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer components {
+  /* Custom component classes using design system */
+  .eco-gradient {
+    background: var(--gradient-eco);
+  }
+  
+  .eco-shadow {
+    box-shadow: var(--shadow-eco);
+  }
+  
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Scroll animations */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+  }
+  
+  .fade-in-up.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Counter animation */
+  .counter {
+    @apply font-bold text-3xl md:text-4xl;
+    background: var(--gradient-eco);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Hero button variants */
+  .btn-eco-primary {
+    @apply bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 rounded-xl transition-smooth transform hover:scale-105;
+    box-shadow: var(--shadow-eco);
+  }
+  
+  .btn-eco-secondary {
+    @apply bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold py-3 px-8 rounded-xl transition-smooth transform hover:scale-105;
+  }
+
+  /* Service cards */
+  .service-card {
+    @apply bg-card p-8 rounded-2xl border border-border hover:shadow-lg transition-smooth transform hover:-translate-y-2;
+  }
+
+  .service-card:hover {
+    box-shadow: var(--shadow-eco);
+  }
+
+  /* Step cards for how it works */
+  .step-card {
+    @apply bg-accent/20 p-6 rounded-xl border border-accent transition-smooth;
+  }
+
+  /* DNA Section animations */
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -10;
+    }
+  }
+}
