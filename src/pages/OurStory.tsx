@@ -1,412 +1,565 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 /* ------------------------------------------------------------------ */
 /*  TypeScript interfaces                                             */
 /* ------------------------------------------------------------------ */
-interface SectionProps {
-  id: string;
-  children: React.ReactNode;
-  className?: string;
-}
-
-interface TimelineItemProps {
+interface TimelineCard {
   year: string;
   title: string;
-  description: string;
-  isActive: boolean;
-  onClick: () => void;
+  story: string;
+}
+
+interface QuoteSlide {
+  quote: string;
+  context: string;
+  author?: string;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Components                                                        */
 /* ------------------------------------------------------------------ */
-const Section: React.FC<SectionProps> = ({ id, children, className = "" }) => (
-  <section
-    id={id}
-    className={`relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 ${className}`}
-  >
-    {children}
-  </section>
+
+// Subtle scroll indicator
+const ScrollCue: React.FC = () => (
+  <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+    <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex justify-center">
+      <div className="w-1 h-3 bg-primary/60 rounded-full mt-2 animate-pulse"></div>
+    </div>
+  </div>
 );
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ year, title, description, isActive, onClick }) => (
-  <div 
-    className={`cursor-pointer transition-all duration-300 p-6 rounded-xl border-2 ${
-      isActive 
-        ? 'border-primary bg-primary/5 shadow-lg transform -translate-y-1' 
-        : 'border-gray-200 hover:border-primary/50 hover:shadow-md hover:-translate-y-0.5'
-    }`}
-    onClick={onClick}
-  >
-    <div className="flex items-center mb-3">
-      <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm transition-colors duration-300 ${
-        isActive ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'
+// Flip box timeline card with smooth transitions
+const TimelineCard: React.FC<{ card: TimelineCard; isVisible: boolean }> = ({ card, isVisible }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  
+  return (
+    <div 
+      className="flex-none w-80 h-96 relative group cursor-pointer snap-center perspective-1000"
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+    >
+      {/* Flip container */}
+      <div className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${
+        isFlipped ? 'rotate-y-180' : ''
       }`}>
-        {year.slice(-2)}
+        
+        {/* Front side */}
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-white to-gray-50 border-2 border-gray-100 rounded-xl p-8 shadow-lg backface-hidden">
+          {/* Background pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-4 right-4 text-6xl font-bold text-primary">
+              {card.year.slice(-2)}
+            </div>
+          </div>
+          
+          {/* Year badge */}
+          <div className="inline-block px-4 py-2 rounded-full text-sm font-bold tracking-wide mb-6 bg-primary/10 text-primary">
+            {card.year}
+          </div>
+          
+          {/* Title */}
+          <h3 className="text-xl font-heading font-bold mb-4 leading-tight text-foreground">
+            {card.title}
+          </h3>
+          
+          {/* Preview text */}
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            {card.story.split('.')[0]}...
+          </p>
+          
+          {/* Bottom elements */}
+          <div className="absolute bottom-8 left-8 right-8">
+            {/* Progress dots */}
+            <div className="flex justify-center space-x-2 mb-4">
+              {[1, 2, 3].map((dot) => (
+                <div key={dot} className="w-2 h-2 rounded-full bg-gray-300" />
+              ))}
+            </div>
+            
+            {/* Hover hint */}
+            <div className="text-center text-xs text-muted-foreground">
+              Hover to read full story
+            </div>
+          </div>
+          
+          {/* Corner accent */}
+          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-primary/20 to-transparent rounded-bl-full" />
+        </div>
+        
+        {/* Back side */}
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary to-primary/90 text-white rounded-xl p-8 shadow-xl backface-hidden rotate-y-180">
+          {/* Background decorations */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-4 right-4 text-6xl font-bold">
+              {card.year.slice(-2)}
+            </div>
+            <div className="absolute bottom-4 left-4 w-20 h-20 rounded-full border-2 border-white/30" />
+            <div className="absolute top-1/2 left-1/4 w-12 h-12 rounded-full border border-white/20" />
+          </div>
+          
+          {/* Year badge */}
+          <div className="inline-block px-4 py-2 rounded-full text-sm font-bold tracking-wide mb-6 bg-white/20 text-white">
+            {card.year}
+          </div>
+          
+          {/* Title */}
+          <h3 className="text-2xl font-heading font-bold mb-6 leading-tight">
+            {card.title}
+          </h3>
+          
+          {/* Full story */}
+          <div className="space-y-4">
+            <p className="text-white/95 leading-relaxed text-sm">
+              {card.story}
+            </p>
+            
+            {/* Milestone indicators */}
+            <div className="flex items-center space-x-4 pt-4 border-t border-white/20">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-white/70 rounded-full animate-pulse" />
+                <span className="text-xs text-white/80">Key Milestone</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-white/70 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
+                <span className="text-xs text-white/80">Growth Phase</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Decorative icon */}
+          <div className="absolute bottom-6 right-6 opacity-30">
+            <div className="text-3xl">🚀</div>
+          </div>
+        </div>
       </div>
-      <h3 className={`ml-4 font-bold text-lg transition-colors duration-300 ${
-        isActive ? 'text-primary' : 'text-foreground'
-      }`}>
-        {title}
-      </h3>
+      
+      {/* Hover glow effect */}
+      <div className={`absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/30 rounded-xl blur-xl transition-opacity duration-500 -z-10 ${
+        isFlipped ? 'opacity-100' : 'opacity-0'
+      }`} />
     </div>
-    <div className={`overflow-hidden transition-all duration-500 ${
-      isActive ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-    }`}>
-      <p className="text-muted-foreground leading-relaxed">{description}</p>
-    </div>
-  </div>
-);
+  );
+};
 
-const InteractiveQuote: React.FC<{ children: React.ReactNode; author?: string }> = ({ children, author }) => (
-  <div className="group relative my-8 p-6 border-l-4 border-primary/30 bg-primary/5 rounded-r-lg hover:bg-primary/10 hover:border-primary/60 transition-all duration-300 cursor-pointer">
-    <blockquote className="text-xl font-medium text-primary italic group-hover:text-primary/90 transition-colors duration-300">
-      {children}
-    </blockquote>
-    {author && (
-      <cite className="block mt-3 text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-        — {author}
-      </cite>
-    )}
-    <div className="absolute top-2 right-4 text-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-300">
-      "
+// Dynamic quote slider with color transitions
+const QuoteSlider: React.FC = () => {
+  const [sliderValue, setSliderValue] = useState(0);
+  
+  const quotes: QuoteSlide[] = [
+    {
+      quote: "Every problem begins with awareness, but solutions require action.",
+      context: "The Beginning",
+      author: "Chethan Shetty"
+    },
+    {
+      quote: "NPSE wasn't just about plastic—it was about changing mindsets.",
+      context: "The Movement",
+      author: "Chethan Shetty"
+    },
+    {
+      quote: "Research taught us that convenience beats consciousness every time.",
+      context: "The Discovery",
+      author: "Chethan Shetty"
+    },
+    {
+      quote: "We realized India needed infrastructure, not just good intentions.",
+      context: "The Insight",
+      author: "Chethan Shetty"
+    },
+    {
+      quote: "Hybits was born from the understanding that sustainability must be seamless.",
+      context: "The Solution",
+      author: "Chethan Shetty"
+    }
+  ];
+  
+  // Color themes for each stage using website brand colors
+  const colorThemes = [
+    {
+      bg: "from-gray-50 to-gray-100",
+      border: "border-gray-200",
+      accent: "text-muted-foreground",
+      glow: "shadow-gray-200/50"
+    },
+    {
+      bg: "from-gray-100 to-primary/5",
+      border: "border-gray-300",
+      accent: "text-foreground",
+      glow: "shadow-gray-300/50"
+    },
+    {
+      bg: "from-primary/5 to-primary/10",
+      border: "border-primary/20",
+      accent: "text-primary/80",
+      glow: "shadow-primary/20"
+    },
+    {
+      bg: "from-primary/10 to-primary/20",
+      border: "border-primary/30",
+      accent: "text-primary",
+      glow: "shadow-primary/30"
+    },
+    {
+      bg: "from-primary/20 to-primary/30",
+      border: "border-primary/40",
+      accent: "text-primary",
+      glow: "shadow-primary/40"
+    }
+  ];
+  
+  // Calculate which quote to show based on slider value
+  const quoteIndex = Math.floor((sliderValue / 100) * (quotes.length - 1));
+  const currentQuote = quotes[quoteIndex];
+  const currentTheme = colorThemes[quoteIndex];
+  
+  // Calculate smooth color interpolation for in-between values
+  const getInterpolatedStyle = () => {
+    const exactPosition = (sliderValue / 100) * (quotes.length - 1);
+    const progress = exactPosition - Math.floor(exactPosition);
+    
+    return {
+      transform: `translateX(${progress * 10}px)`,
+      transition: 'all 0.3s ease-out'
+    };
+  };
+  
+  return (
+    <div className="bg-white rounded-lg p-8 border border-gray-100 shadow-lg">
+      <h3 className="text-2xl font-heading font-bold text-center mb-8 transition-colors duration-500">
+        The Journey in Words
+      </h3>
+      
+      {/* Main quote display area with dynamic background */}
+      <div className={`relative h-64 bg-gradient-to-br ${currentTheme.bg} rounded-lg overflow-hidden flex items-center justify-center p-8 border-2 ${currentTheme.border} transition-all duration-700 shadow-xl ${currentTheme.glow}`}>
+        
+        {/* Animated background elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className={`absolute top-4 right-4 text-6xl font-bold transition-all duration-700 ${currentTheme.accent}`}>
+            {String(quoteIndex + 1).padStart(2, '0')}
+          </div>
+          <div className="absolute bottom-4 left-4 w-16 h-16 rounded-full bg-current opacity-20 animate-pulse" />
+          <div className="absolute top-1/2 left-1/4 w-8 h-8 rounded-full bg-current opacity-30 animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
+        
+        {/* Quote content with smooth transitions */}
+        <div className="text-center max-w-md relative z-10" style={getInterpolatedStyle()}>
+          <blockquote className="text-xl font-medium text-foreground italic mb-4 leading-relaxed transition-all duration-500">
+            "{currentQuote.quote}"
+          </blockquote>
+          <div className={`text-sm font-bold mb-1 transition-all duration-500 ${currentTheme.accent}`}>
+            {currentQuote.context}
+          </div>
+          {currentQuote.author && (
+            <div className="text-xs text-muted-foreground transition-all duration-500">
+              — {currentQuote.author}
+            </div>
+          )}
+        </div>
+        
+        {/* Progress indicator */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {quotes.map((_, index) => (
+            <div
+              key={index}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === quoteIndex 
+                  ? `bg-current ${currentTheme.accent} scale-125` 
+                  : 'bg-gray-300'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+      
+      {/* Enhanced slider with gradient track */}
+      <div className="relative mt-6">
+        <div className="absolute inset-0 h-2 bg-gradient-to-r from-gray-200 via-gray-300 via-primary/20 via-primary/30 to-primary/40 rounded-lg" />
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={sliderValue}
+          onChange={(e) => setSliderValue(Number(e.target.value))}
+          className="relative w-full h-2 bg-transparent rounded-lg appearance-none cursor-pointer slider z-10"
+        />
+      </div>
+      
+      {/* Stage labels with color coding */}
+      <div className="flex justify-between mt-4 text-xs font-medium">
+        <span className="text-muted-foreground transition-all duration-300 hover:scale-110 hover:text-foreground">The Beginning</span>
+        <span className="text-foreground transition-all duration-300 hover:scale-110 hover:text-primary">The Movement</span>
+        <span className="text-primary/80 transition-all duration-300 hover:scale-110 hover:text-primary">The Discovery</span>
+        <span className="text-primary transition-all duration-300 hover:scale-110">The Insight</span>
+        <span className="text-primary transition-all duration-300 hover:scale-110 font-bold">The Solution</span>
+      </div>
+      
+      {/* Current stage indicator */}
+      <div className="text-center mt-4">
+        <div className={`inline-block px-4 py-2 rounded-full text-sm font-medium transition-all duration-500 ${
+          currentTheme.bg.replace('from-', 'bg-').replace(' to-primary/10', '').replace(' to-green-50', '').replace(' to-blue-50', '').replace(' to-yellow-50', '').replace(' to-orange-50', '')
+        } ${currentTheme.border} ${currentTheme.accent}`}>
+          Stage {quoteIndex + 1} of {quotes.length}: {currentQuote.context}
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 /* ------------------------------------------------------------------ */
 /*  Main Component                                                    */
 /* ------------------------------------------------------------------ */
 const OurStory: React.FC = () => {
   const navigate = useNavigate();
-  const [activeTimelineItem, setActiveTimelineItem] = useState<number>(0);
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
-
-  // Scroll progress tracking
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.scrollY;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min(scrolled / maxScroll, 1);
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const timelineData = [
+  const timelineRef = useRef<HTMLDivElement>(null);
+  
+  const timelineData: TimelineCard[] = [
     {
       year: "2019",
       title: "NPSE - No Plastic Save Earth",
-      description: "Chethan launched a grassroots awareness movement to combat single-use plastics. He organized community meetings, engaged with local businesses, and advocated for sustainable alternatives."
+      story: "Chethan launched a grassroots movement in Bangalore. Community meetings, business partnerships, and awareness campaigns. The mission: eliminate single-use plastics from daily life."
     },
     {
-      year: "2020",
-      title: "Deep Research Phase",
-      description: "Extensive research journey across multiple states studying dishwashing setups, interviewing vendors, speaking with event organizers, and analyzing food court operations."
+      year: "2020", 
+      title: "The Research Phase",
+      story: "18 months of deep research across 12 Indian states. Studying dishwashing setups, interviewing vendors, understanding the real challenges faced by food service businesses."
     },
     {
       year: "2021",
-      title: "System Prototyping",
-      description: "Development of centralized, automated dishwashing system prototypes. The gap became clear: India needed a complete ecosystem for dishware management."
+      title: "System Development",
+      story: "Moving beyond awareness to action. Developing centralized dishwashing systems and realizing that India needed complete infrastructure, not just clean plates."
     },
     {
       year: "2022",
       title: "Hybits Launch",
-      description: "NPSE evolved into Hybits, India's first organized dishware rental and sterilization service, offering a comprehensive infrastructure solution."
+      story: "NPSE evolved into Hybits—India's first organized dishware rental and sterilization service. From movement to business, from awareness to infrastructure."
+    },
+    {
+      year: "2024",
+      title: "Scaling Impact",
+      story: "From one city to nationwide presence. Hybits now serves businesses across India, proving that sustainable solutions can be both practical and profitable."
+    },
+    {
+      year: "2024",
+      title: "Premium Glassware Launch",
+      story: "Introducing premium glassware to all packages, elevating the dining experience while maintaining our commitment to sustainability and hygiene."
     }
   ];
 
-  const handleJoinMission = (): void => {
-    navigate("/contact");
-  };
-
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
-      {/* Progress bar */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-        <div 
-          className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-100"
-          style={{ width: `${scrollProgress * 100}%` }}
-        />
-      </div>
-
-      {/* Subtle background pattern */}
-      <div className="fixed inset-0 opacity-5 pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(88, 182, 146, 0.3) 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
-
-      {/* ---------------- HERO ---------------- */}
-      <Section id="hero" className="text-center">
-        <div className="relative">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
-            <span className="inline-block hover:scale-105 transition-transform duration-300 cursor-default">Our</span>{" "}
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block hover:scale-105 transition-transform duration-300 cursor-default">
-              Story
-            </span>
+    <div className="min-h-screen bg-background">
+      
+      {/* -------------------- HERO -------------------- */}
+      <section className="min-h-screen bg-white flex flex-col justify-center items-center relative px-6">
+        <div className="max-w-4xl text-center">
+          <h1 className="text-5xl md:text-7xl font-heading font-bold text-foreground mb-8 leading-tight">
+            Not our past.<br />
+            <span className="text-primary">Our now.</span>
           </h1>
-
-          <div className="max-w-4xl mx-auto">
-            <p className="text-xl text-muted-foreground leading-relaxed hover:text-foreground transition-colors duration-300">
-              The journey from a single moment of realization to India's first
-              organized dishware revolution. How one hospitality professional
-              transformed his vision into a sustainable reality that's changing
-              how India dines.
-            </p>
-          </div>
-
-          {/* Subtle floating elements */}
-          <div className="absolute -top-10 -right-10 w-20 h-20 bg-primary/10 rounded-full blur-xl animate-pulse" />
-          <div className="absolute -bottom-5 -left-5 w-32 h-32 bg-secondary/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+          
+          <p className="text-xl md:text-2xl text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed">
+            From a single moment of realization to India's sustainable dining revolution.
+          </p>
         </div>
-      </Section>
+        
+        <ScrollCue />
+      </section>
 
-      {/* ---------------- BEGINNING ---------------- */}
-      <Section id="beginning">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4 hover:text-primary transition-colors duration-300 cursor-default">
-            The Moment Everything Changed
-          </h2>
-        </div>
-
-        <div className="max-w-4xl mx-auto">
-          <div className="text-lg leading-relaxed space-y-8">
-            <div className="group p-6 rounded-xl hover:bg-card/50 transition-all duration-300">
-              <p className="group-hover:text-foreground transition-colors duration-300 text-muted-foreground">
-                In 2019, <strong className="text-foreground bg-primary/10 px-1 rounded group-hover:bg-primary/20 transition-colors duration-300">Chethan Shetty</strong>, a seasoned hotelier with
-                deep roots in the hospitality industry, found himself at a busy
-                wedding hall in Bangalore. What he witnessed that evening would
-                become the catalyst for a revolution that would transform how
-                India approaches sustainable dining.
-              </p>
-            </div>
-            
-            <div className="group p-6 rounded-xl hover:bg-card/50 transition-all duration-300">
-              <p className="group-hover:text-foreground transition-colors duration-300 text-muted-foreground">
-                Hundreds of plastic plates were being dumped into black bags—dirty,
-                broken, and bound for landfills. But this wasn't an isolated incident.
-                As someone deeply embedded in the industry, Chethan knew this scene
-                was replaying itself across street vendors, bars, festivals, corporate
-                canteens, and even temples throughout the country, every single day.
-              </p>
-            </div>
-            
-            <InteractiveQuote>
-              What bothered him most wasn't just the waste—it was the complete
-              absence of viable alternatives.
-            </InteractiveQuote>
-            
-            <div className="group p-6 rounded-xl hover:bg-card/50 transition-all duration-300">
-              <p className="group-hover:text-foreground transition-colors duration-300 text-muted-foreground">
-                The question that haunted him was simple yet profound: Why were we
-                still choosing disposable over reusable? The answer, he realized,
-                lay not in preference but in systemic gaps—convenience, inconsistent
-                hygiene practices, and most critically, the lack of reliable
-                infrastructure.
-              </p>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ---------------- FOUNDER ---------------- */}
-      <Section id="founder">
-        <Card className="p-8 bg-card border border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 group">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold mb-6 group-hover:text-primary transition-colors duration-300">
-                Meet the Founder
+      {/* -------------------- FOUNDER'S STORY -------------------- */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-8">
+                Meet Chethan Shetty
               </h2>
-              <div className="space-y-4 text-lg leading-relaxed text-muted-foreground">
-                <p className="hover:text-foreground transition-colors duration-300 p-3 rounded hover:bg-primary/5">
-                  <strong className="text-foreground">Chethan Shetty</strong>{" "}
-                  didn't set out to become an entrepreneur. As a hospitality
-                  industry veteran, he understood the operational pressures
-                  that businesses faced: the need for fast service, cost
+              
+              <div className="space-y-6 text-lg leading-relaxed text-muted-foreground">
+                <p>
+                  A seasoned hospitality professional with deep roots in India's food service industry. 
+                  Chethan understood the operational pressures businesses faced—the need for speed, 
                   efficiency, and uncompromising hygiene standards.
                 </p>
-                <p className="hover:text-foreground transition-colors duration-300 p-3 rounded hover:bg-primary/5">
-                  He knew that restaurants, caterers, and event organizers
-                  weren't using plastic by choice—they used it because
-                  traditional dishwashing methods were unreliable,
-                  time-consuming, and often unhygienic.
+                
+                <p>
+                  In 2019, at a bustling wedding hall in Bangalore, he witnessed something that would 
+                  change everything: hundreds of plastic plates being dumped into garbage bags, 
+                  destined for landfills. That night, he couldn't sleep.
                 </p>
-                <p className="hover:text-foreground transition-colors duration-300 p-3 rounded hover:bg-primary/5">
-                  This deep industry knowledge would prove invaluable as he
-                  embarked on a mission that would challenge the status quo
-                  and create an entirely new category of service in India.
+                
+                <p>
+                  As someone embedded in the industry, Chethan knew this wasn't an isolated incident. 
+                  This scene was repeating across thousands of venues daily—street vendors, corporate 
+                  canteens, festivals, even temples. The scale was staggering.
                 </p>
+                
+                <div className="bg-white p-6 rounded-lg border-l-4 border-primary">
+                  <blockquote className="text-xl font-medium text-foreground italic">
+                    "The industry wasn't choosing plastic out of negligence. They were choosing it 
+                    because sustainable alternatives were unreliable, expensive, or inconvenient."
+                  </blockquote>
+                </div>
               </div>
             </div>
             
             <div className="flex items-center justify-center">
-              <div className="relative group/photo">
-                <div className="w-80 h-96 bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center hover:border-primary/50 hover:bg-gradient-to-br hover:from-primary/5 hover:to-secondary/5 transition-all duration-300 cursor-pointer group-hover/photo:scale-105">
-                  <div className="text-center text-gray-500 group-hover/photo:text-primary transition-colors duration-300">
-                    <div className="text-6xl mb-4 group-hover/photo:scale-110 transition-transform duration-300">👨‍💼</div>
-                    <p className="font-medium text-lg">Founder Photo</p>
-                    <p className="text-sm opacity-70">Chethan Shetty</p>
-                    <p className="text-xs mt-2 opacity-50">Click to add photo</p>
-                  </div>
+              <div className="w-96 h-96 bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center">
+                <div className="text-center text-gray-500">
+                  <div className="text-6xl mb-4">👨‍💼</div>
+                  <p className="font-medium text-lg">Chethan Shetty</p>
+                  <p className="text-sm opacity-70">Founder & CEO</p>
                 </div>
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl blur-xl opacity-0 group-hover/photo:opacity-100 transition-opacity duration-500 -z-10" />
               </div>
             </div>
           </div>
-        </Card>
-      </Section>
-
-      {/* ---------------- INTERACTIVE TIMELINE ---------------- */}
-      <Section id="timeline">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4 hover:text-primary transition-colors duration-300 cursor-default">
-            From Awareness to Action
-          </h2>
-          <p className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-            Click on each milestone to explore the journey
-          </p>
         </div>
+      </section>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {timelineData.map((item, index) => (
-            <TimelineItem
-              key={index}
-              year={item.year}
-              title={item.title}
-              description={item.description}
-              isActive={activeTimelineItem === index}
-              onClick={() => setActiveTimelineItem(index)}
-            />
-          ))}
-        </div>
-      </Section>
-
-      {/* ---------------- THE SOLUTION ---------------- */}
-      <Section id="solution">
-        <Card className="p-10 bg-gradient-to-br from-card to-primary/5 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-500 group">
-          <h2 className="text-3xl font-bold mb-8 text-center group-hover:text-primary transition-colors duration-300">
-            The System That Changed Everything
-          </h2>
-
-          <div className="max-w-4xl mx-auto">
-            <InteractiveQuote author="Chethan Shetty">
-              India needed a system—not just clean dishes.
-            </InteractiveQuote>
-
-            <div className="text-lg leading-relaxed space-y-6 text-muted-foreground">
-              <div className="p-4 rounded-lg hover:bg-white/50 hover:text-foreground transition-all duration-300 cursor-default">
-                <p>
-                  Hybits wasn't built as just another cleaning service. It was designed as a comprehensive infrastructure 
-                  solution that addresses every pain point in the dishware lifecycle. From procurement and sterilization 
-                  to delivery and collection, every step was reimagined for maximum efficiency and sustainability.
-                </p>
-              </div>
-              
-              <div className="p-4 rounded-lg hover:bg-white/50 hover:text-foreground transition-all duration-300 cursor-default">
-                <p>
-                  The system operates on three fundamental principles: hospital-grade sterilization ensuring maximum hygiene, 
-                  complete logistics management removing all operational hassles, and environmental responsibility that reduces 
-                  waste by up to 90% without any compromise on quality or service standards.
-                </p>
-              </div>
-              
-              <div className="p-4 rounded-lg hover:bg-white/50 hover:text-foreground transition-all duration-300 cursor-default">
-                <p>
-                  What makes Hybits unique isn't just the technology—it's the understanding that sustainable solutions must 
-                  be more convenient and reliable than the alternatives they're replacing. Every process was designed with 
-                  the end user in mind, ensuring that choosing sustainability also meant choosing superior service.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </Section>
-
-      {/* ---------------- TODAY & CTA ---------------- */}
-      <Section id="today">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold hover:text-primary transition-colors duration-300 cursor-default">
-            Where We Stand Today
-          </h2>
-        </div>
-        
-        <div className="grid lg:grid-cols-2 gap-16">
-          <div className="space-y-8">
-            <div className="p-6 rounded-xl hover:bg-card/50 transition-all duration-300 group">
-              <p className="text-lg leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                What began with one unit, a few crates of plates, and a team of believers has grown into a 
-                movement that's transforming how India approaches sustainable dining. Hybits now serves food outlets, 
-                hospitals, malls, corporate facilities, events, and even individual households across the country.
-              </p>
-            </div>
-            
-            <div className="p-6 rounded-xl hover:bg-card/50 transition-all duration-300 group">
-              <p className="text-lg leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                We've processed hundreds of thousands of dishes, saved tons of plastic from reaching landfills, 
-                and proven that sustainability and operational excellence can coexist. But more importantly, 
-                we've changed mindsets—showing that environmental responsibility doesn't require compromise.
-              </p>
-            </div>
-            
-            <Card className="p-6 bg-primary/10 border border-primary/30 hover:bg-primary/20 hover:border-primary/50 transition-all duration-300 group cursor-pointer">
-              <h3 className="text-xl font-bold mb-3 text-primary group-hover:text-primary/90">India's First</h3>
-              <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                Organized dishware rental and sterilization service, proudly serving sustainability with every plate.
-              </p>
-            </Card>
+      {/* -------------------- NPSE ORIGINS -------------------- */}
+      <section className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-6">
+              NPSE: Where It All Began
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              No Plastic Save Earth wasn't just a movement—it was the foundation that would 
+              eventually become India's sustainable dining infrastructure.
+            </p>
           </div>
 
-          <Card className="p-8 bg-card border border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <h3 className="text-2xl font-bold mb-6 group-hover:text-primary transition-colors duration-300">
-              The Mission Continues
-            </h3>
+          <div className="space-y-12">
+            <div className="bg-gray-50 rounded-lg p-8">
+              <h3 className="text-xl font-heading font-semibold text-foreground mb-4">The Grassroots Movement</h3>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                NPSE began with community meetings in Bangalore neighborhoods. Chethan organized 
+                awareness sessions, partnered with local businesses, and advocated for sustainable 
+                alternatives. The goal was simple: eliminate single-use plastics from daily life.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                But awareness alone wasn't enough. People understood the problem but lacked practical 
+                alternatives. This gap between consciousness and convenience would become the driving 
+                force behind Hybits.
+              </p>
+            </div>
+
+            <div className="bg-primary/5 rounded-lg p-8">
+              <h3 className="text-xl font-heading font-semibold text-foreground mb-4">The Transition</h3>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                As NPSE grew, Chethan realized that sustainable change required more than advocacy—it 
+                needed infrastructure. Businesses wanted to be environmentally responsible, but they 
+                needed solutions that worked within their operational realities.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                This insight transformed NPSE from an awareness movement into the foundation for what 
+                would become India's first organized dishware rental and sterilization service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------- HORIZONTAL TIMELINE -------------------- */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-center mb-16 text-foreground">
+            The Evolution Journey
+          </h2>
+          
+          <div 
+            ref={timelineRef}
+            className="flex gap-8 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {timelineData.map((card, index) => (
+              <TimelineCard key={index} card={card} isVisible={true} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------- COMPANY PHILOSOPHY -------------------- */}
+      <section className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-6">
+              Building Beyond Business
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Hybits represents more than a service—it's the infrastructure that makes 
+              sustainable choices the obvious choices.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-6">
-              <p className="text-lg text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                For Chethan, Hybits represents more than a business—it's a revolution to eliminate disposables 
-                and restore accountability to how India eats and serves food.
-              </p>
+              <div>
+                <h3 className="text-xl font-heading font-semibold text-foreground mb-3">The Problem We Solve</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Every day, millions of plastic plates serve a 15-minute purpose before becoming 
+                  500-year problems. We saw this cycle and asked: what if convenience and 
+                  sustainability weren't opposing forces?
+                </p>
+              </div>
               
-              <p className="text-lg text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                Every plate cleaned, every event served, and every partnership formed brings us closer to a future 
-                where sustainable dining is not just an option, but the natural choice for businesses and consumers alike.
-              </p>
-              
-              <InteractiveQuote>
-                This is just the beginning of India's sustainable dining revolution.
-              </InteractiveQuote>
+              <div>
+                <h3 className="text-xl font-heading font-semibold text-foreground mb-3">Our Approach</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  We don't just provide clean plates—we provide complete infrastructure. 
+                  Hospital-grade sterilization, seamless logistics, and reliability that makes 
+                  choosing sustainability easier than choosing disposables.
+                </p>
+              </div>
             </div>
             
-            <div className="mt-8 text-center">
-              <Button 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden group/btn"
-                onClick={handleJoinMission}
-              >
-                <span className="relative z-10">Join Our Mission</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
-              </Button>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-heading font-semibold text-foreground mb-3">The Vision</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  An India where sustainable dining isn't a premium choice—it's the natural choice. 
+                  Where businesses thrive while the environment prospers. Where convenience and 
+                  consciousness work hand in hand.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-heading font-semibold text-foreground mb-3">The Mission</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  To eliminate disposable culture from India's food service industry by building 
+                  infrastructure that makes sustainable practices more convenient, reliable, and 
+                  cost-effective than traditional alternatives.
+                </p>
+              </div>
             </div>
-          </Card>
+          </div>
         </div>
-      </Section>
+      </section>
 
-      {/* ---------------- FOOTER QUOTE ---------------- */}
-      <Section id="footer" className="pb-24">
-        <Card className="p-8 bg-gradient-to-br from-secondary/10 to-primary/10 border border-secondary/30 text-center hover:shadow-xl transition-all duration-300 group">
-          <blockquote className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-            "A revolution to wipe out disposables and restore accountability to how India eats and serves."
-          </blockquote>
-          <p className="text-lg text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-            — Chethan Shetty, Founder & CEO, Hybits
-          </p>
-        </Card>
-      </Section>
+      {/* -------------------- QUOTE SLIDER -------------------- */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-6">
+          <QuoteSlider />
+        </div>
+      </section>
+
+      {/* -------------------- OUTRO -------------------- */}
+      <section className="py-24 bg-primary text-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-heading font-bold mb-8 leading-tight">
+            Our work remains.<br />
+            Our story continues.
+          </h2>
+          
+          <Button 
+            variant="outline"
+            className="bg-transparent border-white text-white hover:bg-white hover:text-primary transition-all duration-300 px-8 py-3 text-lg font-medium"
+            onClick={() => navigate("/contact")}
+          >
+            Join the Movement
+          </Button>
+        </div>
+      </section>
     </div>
   );
 };

@@ -106,15 +106,19 @@ const Home = () => {
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed hover:text-foreground transition-colors duration-300">
-                  India's first reusable dishware & centralized dishwashing solution
+                  India's first reusable dishware, premium glassware & centralized dishwashing solution
                 </p>
               </div>
 
               {/* Value Propositions */}
-              <div className="grid sm:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card className="text-center p-6 bg-card/70 border border-primary/20 hover:border-primary/50 hover:shadow-lg hover:bg-card transition-all duration-300 group cursor-pointer">
                   <div className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">🧼</div>
                   <h3 className="font-semibold text-sm group-hover:text-primary transition-colors duration-300">100% Sterilized Dishes</h3>
+                </Card>
+                <Card className="text-center p-6 bg-card/70 border border-primary/20 hover:border-primary/50 hover:shadow-lg hover:bg-card transition-all duration-300 group cursor-pointer">
+                  <div className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">🍸</div>
+                  <h3 className="font-semibold text-sm group-hover:text-primary transition-colors duration-300">Premium Glassware Included</h3>
                 </Card>
                 <Card className="text-center p-6 bg-card/70 border border-primary/20 hover:border-primary/50 hover:shadow-lg hover:bg-card transition-all duration-300 group cursor-pointer">
                   <div className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">♻️</div>
@@ -338,11 +342,10 @@ const Home = () => {
               </p>
               <Button 
                 size="lg"
-                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl relative overflow-hidden group/btn"
+                variant="cta"
                 onClick={() => navigate('/impact')}
               >
                 <span className="relative z-10">Explore Full Impact Report</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
               </Button>
             </Card>
           </div>

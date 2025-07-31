@@ -17,10 +17,10 @@ const stepDetails = [
     funFact: "Our dishes are sanitized using hospital-grade UV-C technology."
   },
   {
-    icon: <span className="text-3xl">🍽️</span>,
+    icon: <span className="text-3xl">🍸</span>, // Cocktail glass for serving
     title: "Serve with Style",
-    description: "Impress your guests with elegant, eco-friendly dining presentation",
-    funFact: "Eco-friendly dining can reduce event waste by up to 90%."
+    description: "Impress your guests with elegant, eco-friendly dining presentation, including premium glassware!",
+    funFact: "Eco-friendly dining can reduce event waste by up to 90%. Premium glassware is now included!"
   },
   {
     icon: <span className="text-3xl">🚚</span>,
@@ -197,6 +197,43 @@ const HowItWorks = () => {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             A simple, sustainable solution that transforms your dining experience from start to finish
           </p>
+        </div>
+
+        {/* Premium Glassware Highlight Section */}
+        <div className="mb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6">
+              <span className="inline-block hover:scale-105 transition-transform duration-300 cursor-default">Premium Glassware</span>{" "}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block hover:scale-105 transition-transform duration-300 cursor-default">Included</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto hover:text-foreground transition-colors duration-300">
+              Every Hybits package now includes elegant, crystal-clear premium glassware for all your beverage needs
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <div className="text-center p-8 bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/20 rounded-xl hover:shadow-xl transition-all duration-300 group">
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🍸</div>
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Crystal-Clear Quality</h3>
+              <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                Premium glassware that enhances the visual appeal of any beverage, from cocktails to soft drinks
+              </p>
+            </div>
+            <div className="text-center p-8 bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/20 rounded-xl hover:shadow-xl transition-all duration-300 group">
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">♻️</div>
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Eco-Friendly & Reusable</h3>
+              <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                Sustainable alternative to plastic cups, reducing waste while maintaining elegance
+              </p>
+            </div>
+            <div className="text-center p-8 bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/20 rounded-xl hover:shadow-xl transition-all duration-300 group">
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🧼</div>
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Professional Cleaning</h3>
+              <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                UV-sterilized and professionally cleaned to ensure the highest hygiene standards
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Steps (Interactive) */}

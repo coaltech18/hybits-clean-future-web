@@ -45,6 +45,12 @@ const timelineMilestones = [
     desc: "Major milestone in sustainable dining for India.",
     icon: "🍽️"
   },
+  {
+    year: 2024,
+    title: "Premium Glassware Launch",
+    desc: "Introduced premium glassware to all packages, further reducing plastic cup waste.",
+    icon: "🍸"
+  },
 ];
 
 const methodology = [
@@ -59,6 +65,12 @@ const methodology = [
     title: "Water Saved",
     formula: "Guests × 12 L",
     desc: "Our centralized washing system uses 12 liters less water per guest compared to traditional hand washing or disposables."
+  },
+  {
+    icon: "🍸",
+    title: "Glassware Impact",
+    formula: "Premium glassware included",
+    desc: "Premium glassware eliminates plastic cup waste while providing elegant beverage service for all events."
   }
 ];
 
@@ -77,7 +89,11 @@ const impactFaqs = [
   },
   {
     q: "Can I get a custom impact report for my event?",
-    a: "Yes! Contact us and we’ll provide a detailed report based on your event’s size and type."
+    a: "Yes! Contact us and we'll provide a detailed report based on your event's size and type."
+  },
+  {
+    q: "Is premium glassware really included in all packages?",
+    a: "Yes! Premium glassware is now included in all our packages at no extra cost, helping reduce plastic cup waste."
   }
 ];
 

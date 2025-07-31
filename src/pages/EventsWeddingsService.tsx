@@ -29,6 +29,7 @@ const EventsWeddingsService = () => {
         "Premium ceramic plates",
         "Elegant serving bowls",
         "Steel cutlery set",
+        "Premium glassware included",
         "Next day delivery",
         "24/7 support"
       ],
@@ -43,7 +44,8 @@ const EventsWeddingsService = () => {
         "Custom packaging",
         "Same day pickup",
         "Dedicated coordinator",
-        "Backup inventory"
+        "Backup inventory",
+        "Premium glassware included"
       ],
       popular: true
     },
@@ -56,7 +58,8 @@ const EventsWeddingsService = () => {
         "Multiple delivery locations",
         "Event setup assistance",
         "Premium dishware options",
-        "Priority customer service"
+        "Priority customer service",
+        "Premium glassware included"
       ],
       popular: false
     }

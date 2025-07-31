@@ -23,35 +23,35 @@ const Services = () => {
   const services = [
     {
       id: "caterers-event-organizers",
-      icon: "🎉",
+      icon: "🍸", // Cocktail glass icon
       title: "Caterers & Event Organizers",
-      description: "Premium, sustainable dishware for all types of events and catering needs.",
-      highlights: ["50-10,000+ guests", "24-48 hour turnaround", "Custom event packaging"],
+      description: "Premium, sustainable dishware and glassware for all types of events and catering needs.",
+      highlights: ["50-10,000+ guests", "24-48 hour turnaround", "Custom event packaging", "Premium glassware included"],
       gradient: "from-pink-500/20 to-purple-500/20"
     },
     {
       id: "food-courts-food-streets",
-      icon: "🍜",
+      icon: "🍸", // Cocktail glass icon
       title: "Food Courts & Food Streets",
-      description: "Efficient, eco-friendly dishware for high-volume food courts and bustling food streets.",
-      highlights: ["500-5,000+ daily", "Same-day pickup", "Bulk & volume pricing"],
+      description: "Efficient, eco-friendly dishware and premium glassware for high-volume food courts and bustling food streets.",
+      highlights: ["500-5,000+ daily", "Same-day pickup", "Bulk & volume pricing", "Premium glassware included"],
       gradient: "from-orange-500/20 to-red-500/20"
     },
     {
       id: "institutions-offices",
-      icon: "🏥",
+      icon: "🍸", // Cocktail glass icon
       title: "Institutions & Offices",
-      description: "Reliable dishware solutions for regular use in offices, hospitals, and institutions.",
-      highlights: ["200-2,000+ daily", "24 hour turnaround", "Health-compliant"],
+      description: "Reliable dishware and premium glassware solutions for regular use in offices, hospitals, and institutions.",
+      highlights: ["200-2,000+ daily", "24 hour turnaround", "Health-compliant", "Premium glassware included"],
       gradient: "from-blue-500/20 to-green-500/20"
     },
     {
       id: "apartment-societies-household-gatherings",
-      icon: "🏘️",
+      icon: "🍸", // Cocktail glass icon
       title: "Apartment Societies & Household Gatherings",
-      description: "Convenient, sustainable dishware for community events, parties, and home gatherings.",
-      highlights: ["20-500+ guests", "Doorstep delivery & pickup", "No cleaning hassle"],
-      gradient: "from-green-500/20 to-lime-500/20"
+      description: "Convenient, eco-friendly dishware and premium glassware for home parties and society events.",
+      highlights: ["20-500+ guests", "Flexible packages", "Doorstep delivery & pickup", "Premium glassware included"],
+      gradient: "from-green-500/20 to-yellow-500/20"
     }
   ];
 
@@ -93,7 +93,7 @@ const Services = () => {
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block hover:scale-105 transition-transform duration-300 cursor-default">Services</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto hover:text-foreground transition-colors duration-300 mb-4">
-            Comprehensive dishware solutions tailored for every need. Choose the perfect service for your requirements.
+            Comprehensive dishware and premium glassware solutions tailored for every need. Choose the perfect service for your requirements.
           </p>
           <p className="text-primary font-medium">
             Click on any service below to learn more and get detailed information
@@ -192,6 +192,43 @@ const Services = () => {
               </div>
             </div>
           </Card>
+        </div>
+
+        {/* Premium Glassware Section */}
+        <div className="mb-20">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6">
+              <span className="inline-block hover:scale-105 transition-transform duration-300 cursor-default">Premium Glassware</span>{" "}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block hover:scale-105 transition-transform duration-300 cursor-default">Included in Every Package</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto hover:text-foreground transition-colors duration-300">
+              Elevate your events with our crystal-clear, elegant premium glassware - now included in all our packages
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <Card className="p-8 text-center bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/20 hover:shadow-xl transition-all duration-300 group">
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🍸</div>
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Crystal-Clear Quality</h3>
+              <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                Premium glassware that enhances the visual appeal of any beverage, from cocktails to soft drinks
+              </p>
+            </Card>
+            <Card className="p-8 text-center bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/20 hover:shadow-xl transition-all duration-300 group">
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">♻️</div>
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Eco-Friendly & Reusable</h3>
+              <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                Sustainable alternative to plastic cups, reducing waste while maintaining elegance
+              </p>
+            </Card>
+            <Card className="p-8 text-center bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/20 hover:shadow-xl transition-all duration-300 group">
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🧼</div>
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Professional Cleaning</h3>
+              <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                UV-sterilized and professionally cleaned to ensure the highest hygiene standards
+              </p>
+            </Card>
+          </div>
         </div>
 
         {/* Why Choose Hybits Comparison Section */}
@@ -330,11 +367,10 @@ const Services = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl relative overflow-hidden group/btn"
+                variant="cta"
                 onClick={() => navigate('/contact')}
               >
                 <span className="relative z-10">Get Custom Quote</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
               </Button>
               <Button 
                 variant="outline"

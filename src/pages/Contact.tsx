@@ -141,7 +141,7 @@ const Contact = () => {
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block hover:scale-105 transition-transform duration-300 cursor-default">Sustainability</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto hover:text-foreground transition-colors duration-300">
-            Ready to make your next event or operation completely sustainable? 
+            Ready to make your next event or operation completely sustainable with premium glassware included? 
             Get in touch for a customized solution.
           </p>
           

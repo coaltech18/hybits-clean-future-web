@@ -8,25 +8,31 @@ const UnboxingAnimation = () => {
   const dishwareItems = [
     { 
       name: "Dinner Plates", 
-      icon: "🍽️", 
+      icon: "\ud83c\udf7d\ufe0f", 
       benefit: "UV sterilized, reusable 500+ times",
       position: { x: "20%", y: "30%" }
     },
     { 
       name: "Bowls", 
-      icon: "🥣", 
+      icon: "\ud83e\udd63", 
       benefit: "Perfect for soups and curries",
       position: { x: "40%", y: "20%" }
     },
     { 
       name: "Cups", 
-      icon: "☕", 
+      icon: "\u2615", 
       benefit: "Heat resistant, eco-friendly material",
       position: { x: "60%", y: "35%" }
     },
     { 
+      name: "Premium Glassware", 
+      icon: "\ud83c\udf78", // Cocktail glass icon
+      benefit: "Crystal-clear, elegant, and reusable for all beverages - NOW INCLUDED!",
+      position: { x: "50%", y: "50%" }
+    },
+    { 
       name: "Cutlery Set", 
-      icon: "🍴", 
+      icon: "\ud83c\udf74", 
       benefit: "Stainless steel, dishwasher safe",
       position: { x: "80%", y: "25%" }
     }
@@ -66,7 +72,7 @@ const UnboxingAnimation = () => {
             Unbox Sustainability
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Every Hybits package contains premium, reusable dishware ready for your event
+            Every Hybits package contains premium, reusable dishware and glassware ready for your event
           </p>
         </div>
 

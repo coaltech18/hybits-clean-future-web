@@ -100,8 +100,8 @@ const Navigation = () => {
             </div>
           </div>
         )}
-      </div>
-    </nav>
+              </div>
+      </nav>
   );
 };
 
