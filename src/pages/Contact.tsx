@@ -248,10 +248,10 @@ const Contact = () => {
 
               <Button 
                 type="submit" 
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl relative overflow-hidden group"
+                variant="cta"
+                className="w-full"
               >
                 <span className="relative z-10">Send Message</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               </Button>
               
               {result && (

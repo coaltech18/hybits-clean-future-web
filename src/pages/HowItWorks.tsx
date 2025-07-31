@@ -428,7 +428,8 @@ const HowItWorks = () => {
             Join hundreds of satisfied customers who have made the switch to sustainable dining
           </p>
           <Button
-            className="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-primary-foreground font-semibold text-lg px-10 py-5 rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-110 animate-bounce-slow mt-4"
+            size="lg"
+            variant="cta"
             onClick={() => navigate("/contact")}
           >
             Get Started !

@@ -58,7 +58,7 @@ const NotFound = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+              variant="cta"
               onClick={() => window.location.href = '/'}
             >
               Return to Home

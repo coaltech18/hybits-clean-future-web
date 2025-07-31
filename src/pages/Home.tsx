@@ -133,11 +133,11 @@ const Home = () => {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl relative overflow-hidden group"
+                  size="lg"
+                  variant="cta"
                   onClick={() => navigate("/contact")}
                 >
                   <span className="relative z-10">Get a Quote</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                 </Button>
               </div>
 

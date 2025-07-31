@@ -196,7 +196,7 @@ const InstitutionsOfficesService = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg"
-                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                variant="cta"
                 onClick={() => navigate('/contact')}
               >
                 Get Institutional Quote
@@ -333,11 +333,8 @@ const InstitutionsOfficesService = () => {
                   ))}
                 </ul>
                 <Button 
-                  className={`w-full transition-all duration-300 ${
-                    pkg.popular 
-                      ? 'bg-primary hover:bg-primary/80 text-white' 
-                      : 'bg-primary/10 text-primary hover:bg-primary hover:text-white border border-primary/20'
-                  }`}
+                  variant="cta"
+                  className="w-full"
                   onClick={() => navigate('/contact')}
                 >
                   Choose {pkg.name}
@@ -389,7 +386,7 @@ const InstitutionsOfficesService = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg"
-              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+              variant="cta"
               onClick={() => navigate('/contact')}
             >
               Get Institutional Quote

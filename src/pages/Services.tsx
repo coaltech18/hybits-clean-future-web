@@ -374,7 +374,7 @@ const Services = () => {
               </Button>
               <Button 
                 variant="outline"
-                className="border-primary/40 text-primary hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-105"
+                className="border-primary/40 text-primary hover:bg-primary hover:text-white transition-all duration-300"
                 onClick={() => navigate('/how-it-works')}
               >
                 Learn How It Works

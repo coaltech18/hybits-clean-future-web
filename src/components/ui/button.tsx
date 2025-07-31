@@ -18,8 +18,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // New CTA variant
-        cta: "bg-gradient-to-r from-primary via-secondary to-primary/80 text-white font-semibold px-8 py-4 rounded-lg shadow-xl border-none relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:ring-4 focus:ring-primary/30 focus:ring-offset-2 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/10 before:via-white/0 before:to-white/10 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-700"
+        // Enhanced CTA variant - more eye-catching and visible
+        cta: "bg-gradient-to-r from-primary via-secondary to-primary/80 text-white font-semibold px-8 py-4 rounded-xl shadow-2xl border-none relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-3xl focus:ring-4 focus:ring-primary/30 focus:ring-offset-2 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-white/0 before:to-white/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-700 hover:shadow-primary/25 animate-pulse-glow"
       },
       size: {
         default: "h-10 px-4 py-2",

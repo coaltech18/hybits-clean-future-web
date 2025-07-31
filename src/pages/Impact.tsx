@@ -416,8 +416,11 @@ const Impact = () => {
             </div>
           </div>
           
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg px-8 py-4 rounded-xl transition-smooth transform hover:scale-105 shadow-lg"
-            onClick={() => navigate("/contact")}>
+          <Button 
+            size="lg"
+            variant="cta"
+            onClick={() => navigate("/contact")}
+          >
             Join the Sustainable Dining Movement
           </Button>
         </div>

@@ -552,8 +552,9 @@ const OurStory: React.FC = () => {
           </h2>
           
           <Button 
-            variant="outline"
-            className="bg-transparent border-white text-white hover:bg-white hover:text-primary transition-all duration-300 px-8 py-3 text-lg font-medium"
+            size="lg"
+            variant="cta"
+            className="bg-white text-primary hover:bg-white/90"
             onClick={() => navigate("/contact")}
           >
             Join the Movement
