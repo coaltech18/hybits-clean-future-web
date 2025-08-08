@@ -96,6 +96,13 @@ const Contact = () => {
       description: "Mon-Sat, 9 AM - 8 PM"
     },
     {
+      icon: "💬",
+      title: "WhatsApp",
+      value: "+91-9945624643",
+      description: "Quick chat support",
+      url: "https://wa.me/919945624643?text=Hi%20Hybits!%20I'm%20interested%20in%20your%20sustainable%20glassware%20services."
+    },
+    {
       icon: "📧",
       title: "Email",
       value: "info@hybits.in",
@@ -112,7 +119,7 @@ const Contact = () => {
   const socialLinks = [
     { name: "Instagram", icon: "📷", url: "#" },
     { name: "LinkedIn", icon: "💼", url: "#" },
-    { name: "WhatsApp", icon: "💬", url: "#" }
+    { name: "WhatsApp", icon: "💬", url: "https://wa.me/919945624643?text=Hi%20Hybits!%20I'm%20interested%20in%20your%20sustainable%20glassware%20services." }
   ];
 
   return (
@@ -270,8 +277,8 @@ const Contact = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <h2 className="text-2xl font-bold hover:text-primary transition-colors duration-300 cursor-default">Get in Touch</h2>
-              {contactInfo.map((info, index) => (
-                <Card key={index} className="p-6 bg-card/70 border border-primary/20 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group cursor-pointer">
+              {contactInfo.map((info, index) => {
+                const CardContent = (
                   <div className="flex items-start space-x-4">
                     <div className="text-2xl group-hover:scale-110 transition-transform duration-300">{info.icon}</div>
                     <div className="flex-1">
@@ -280,8 +287,24 @@ const Contact = () => {
                       <p className="text-muted-foreground text-sm group-hover:text-foreground transition-colors duration-300">{info.description}</p>
                     </div>
                   </div>
-                </Card>
-              ))}
+                );
+
+                if (info.url) {
+                  return (
+                    <a key={index} href={info.url} target="_blank" rel="noopener noreferrer">
+                      <Card className="p-6 bg-card/70 border border-primary/20 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                        {CardContent}
+                      </Card>
+                    </a>
+                  );
+                }
+
+                return (
+                  <Card key={index} className="p-6 bg-card/70 border border-primary/20 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                    {CardContent}
+                  </Card>
+                );
+              })}
             </div>
 
             <Card className="p-6 bg-card/70 border border-primary/20 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group">

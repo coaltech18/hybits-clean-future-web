@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useIsFetching } from "@tanstack/react-query";
 import Footer from "./components/Footer";
 import { PerformanceMonitor } from "./components/PerformanceMonitor";
+import WhatsAppFloatingButton from "./components/WhatsAppFloatingButton";
 
 const queryClient = new QueryClient();
 
@@ -113,6 +114,7 @@ const App = () => (
                 </Routes>
               </div>
               <Footer />
+              <WhatsAppFloatingButton />
             </div>
           </Suspense>
         </ErrorBoundary>
